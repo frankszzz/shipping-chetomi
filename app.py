@@ -5,6 +5,7 @@ from wtforms.fields import IntegerField
 from models import db, ShippingService, ShippingRate, DeliveryLog
 from services.openroute import OpenRouteService
 from config import Config
+
 class ShippingServiceAdmin(ModelView):
     column_list = ('name', 'code', 'active', 'start_hour', 'end_hour')
     column_labels = {
@@ -18,11 +19,20 @@ class ShippingServiceAdmin(ModelView):
     form_columns = ('name', 'code', 'description', 'active', 'start_hour', 'end_hour')
     column_filters = ('active',)
     can_export = True
-    # **¡Agrega esto!**
     form_overrides = dict(
         start_hour=IntegerField,
         end_hour=IntegerField
     )
+    form_args = {
+        'start_hour': {
+            'label': 'Hora Inicio (0-23)',
+            'default': 0
+        },
+        'end_hour': {
+            'label': 'Hora Fin (0-23)',
+            'default': 18
+        }
+    }
 
 app = Flask(__name__)
 app.config.from_object(Config)
