@@ -29,7 +29,7 @@ app.config.from_object(Config)
 db.init_app(app)
 
 admin = Admin(app, name='Shipping Admin', template_mode='bootstrap4', url='/admin')
-admin.add_view(ModelView(ShippingService, db.session, name='Servicios'))
+admin.add_view(ShippingServiceAdmin(ShippingService, db.session, name='Servicios'))
 admin.add_view(ModelView(ShippingRate, db.session, name='Tarifas'))
 admin.add_view(ModelView(DeliveryLog, db.session, name='Historial'))
 
