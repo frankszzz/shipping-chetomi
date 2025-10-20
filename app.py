@@ -1,9 +1,28 @@
 from flask import Flask, request, jsonify, render_template
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from wtforms.fields import IntegerField
 from models import db, ShippingService, ShippingRate, DeliveryLog
 from services.openroute import OpenRouteService
 from config import Config
+class ShippingServiceAdmin(ModelView):
+    column_list = ('name', 'code', 'active', 'start_hour', 'end_hour')
+    column_labels = {
+        'name': 'Nombre del Servicio',
+        'code': 'Código',
+        'active': 'Activo',
+        'start_hour': 'Hora Inicio (0-23)',
+        'end_hour': 'Hora Fin (0-23)',
+        'description': 'Descripción'
+    }
+    form_columns = ('name', 'code', 'description', 'active', 'start_hour', 'end_hour')
+    column_filters = ('active',)
+    can_export = True
+    # **¡Agrega esto!**
+    form_overrides = dict(
+        start_hour=IntegerField,
+        end_hour=IntegerField
+    )
 
 app = Flask(__name__)
 app.config.from_object(Config)
